@@ -1,0 +1,20 @@
+sudo: false
+language: node_js
+
+env:
+  global:
+    - DENO_VERSION=v0.7.0
+
+node_js:
+  - "10"
+
+cache:
+  directories:
+    - $HOME/.cache/deno
+
+before_install:
+  - curl -L https://deno.land/x/install/install.sh | sh -s $DENO_VERSION
+  - export PATH="$HOME/.deno/bin:$PATH"
+
+script:
+  - deno run ./test/test.ts
