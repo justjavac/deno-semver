@@ -2,6 +2,8 @@
 
 **A fork of [node-semver](https://github.com/npm/node-semver) using TypeScript**
 
+[![Build Status](https://travis-ci.com/justjavac/deno-semver.svg?branch=master)](https://travis-ci.com/justjavac/deno-semver)
+
 ## Usage
 
 As a node module:
