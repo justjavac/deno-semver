@@ -9,7 +9,7 @@
 As a node module:
 
 ```ts
-import * as semver from "https://deno.land/x/semver/mod.ts;
+import * as semver from "https://deno.land/x/semver/mod.ts";
 
 semver.valid("1.2.3"); // "1.2.3"
 semver.valid("a.b.c"); // null
