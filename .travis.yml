@@ -3,7 +3,7 @@ language: node_js
 
 env:
   global:
-    - DENO_VERSION=v0.7.0
+    - DENO_VERSION=v0.12.0
 
 node_js:
   - "10"
