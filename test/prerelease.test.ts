@@ -1,12 +1,12 @@
-import { test, assertEquals } from "./deps.ts";
+import { assertEquals } from "./deps.ts";
 
 import * as semver from "../mod.ts";
 
 type prereleaseParts = [string | number, (number | string)?];
 
-test(function prerelease(): void {
+Deno.test("prerelease", function (): void {
   // [prereleaseParts, version, loose]
-  const versions: [prereleaseParts, string, boolean?][] = [
+  const versions: [prereleaseParts | null, string, boolean?][] = [
     [["alpha", 1], "1.2.2-alpha.1"],
     [[1], "0.6.1-1"],
     [["beta", 2], "1.0.0-beta.2"],
@@ -15,10 +15,10 @@ test(function prerelease(): void {
     [["beta"], "0.6.1beta", true],
     [null, "1.0.0", true],
     [null, "~2.0.0-alpha.1", false],
-    [null, "invalid version"]
+    [null, "invalid version"],
   ];
 
-  versions.forEach(function(tuple) {
+  versions.forEach(function (tuple) {
     const expected = tuple[0];
     const version = tuple[1];
     const loose = tuple[2] || false;

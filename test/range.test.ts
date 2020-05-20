@@ -1,11 +1,11 @@
-import { test, assert, assertEquals, assertThrows } from "./deps.ts";
+import { assert, assertEquals, assertThrows } from "./deps.ts";
 
 import * as semver from "../mod.ts";
 
 type Version = string;
 type Options = semver.Options | boolean;
 
-test(function range(): void {
+Deno.test("range", function (): void {
   // [range, version]
   // version should be included by range
   const versions: [Version, Version, Options?][] = [
@@ -114,10 +114,10 @@ test(function range(): void {
     ["x - 1.x", "0.9.7"],
     ["1.0.0 - x", "1.9.7"],
     ["1.x - x", "1.9.7"],
-    ["<=7.x", "7.9.9"]
+    ["<=7.x", "7.9.9"],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const range = v[0];
     const ver = v[1];
     const loose = v[2];
@@ -125,7 +125,7 @@ test(function range(): void {
   });
 });
 
-test(function negativeRange(): void {
+Deno.test("negativeRange", function (): void {
   // [range, version]
   // version should not be included by range
   const versions: [Version, Version, Options?][] = [
@@ -200,10 +200,10 @@ test(function negativeRange(): void {
     // invalid ranges never satisfied!
     ["blerg", "1.2.3"],
     ["git+https://user:password0123@github.com/foo", "123.0.0", true],
-    ["^1.2.3", "2.0.0-pre"]
+    ["^1.2.3", "2.0.0-pre"],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const range = v[0];
     const ver = v[1];
     const loose = v[2];
@@ -212,7 +212,7 @@ test(function negativeRange(): void {
   });
 });
 
-test(function unlockedPrereleaseRange(): void {
+Deno.test("unlockedPrereleaseRange", function (): void {
   // [range, version]
   // version should be included by range
   const versions: [Version, Version][] = [
@@ -221,29 +221,29 @@ test(function unlockedPrereleaseRange(): void {
     ["^1.0.0-0", "1.0.1-rc1"],
     ["^1.0.0-rc2", "1.0.1-rc1"],
     ["^1.0.0", "1.0.1-rc1"],
-    ["^1.0.0", "1.1.0-rc1"]
+    ["^1.0.0", "1.1.0-rc1"],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const range = v[0];
     const ver = v[1];
     const options = { includePrerelease: true };
     assert(
       semver.satisfies(ver, range, options),
-      range + " satisfied by " + ver
+      range + " satisfied by " + ver,
     );
   });
 });
 
-test(function negativeUnlockedPrereleaseRange(): void {
+Deno.test("negativeUnlockedPrereleaseRange", function (): void {
   // [range, version]
   // version should be included by range
   const versions: [Version, Version][] = [
     ["^1.0.0", "1.0.0-rc1"],
-    ["^1.2.3-rc2", "2.0.0"]
+    ["^1.2.3-rc2", "2.0.0"],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const range = v[0];
     const ver = v[1];
     const options = { includePrerelease: true };
@@ -252,11 +252,11 @@ test(function negativeUnlockedPrereleaseRange(): void {
   });
 });
 
-test(function validRange(): void {
+Deno.test("validRange", function (): void {
   // [range, result]
   // validRange(range) -> result
   // translate ranges into their canonical form
-  const versions: [Version, Version, Options?][] = [
+  const versions: [Version | null, Version | null, Options?][] = [
     ["1.0.0 - 2.0.0", ">=1.0.0 <=2.0.0"],
     ["1.0.0", "1.0.0"],
     [">=*", "*"],
@@ -328,10 +328,10 @@ test(function validRange(): void {
     [">01.02.03", null],
     ["~1.2.3beta", ">=1.2.3-beta <1.3.0", true],
     ["~1.2.3beta", null],
-    ["^ 1.2 ^ 1", ">=1.2.0 <2.0.0 >=1.0.0 <2.0.0"]
+    ["^ 1.2 ^ 1", ">=1.2.0 <2.0.0 >=1.0.0 <2.0.0"],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const pre = v[0];
     const wanted = v[1];
     const loose = v[2];
@@ -340,37 +340,37 @@ test(function validRange(): void {
   });
 });
 
-test(function strictVsLoose(): void {
+Deno.test("strictVsLoose", function (): void {
   const versions: [Version, Version][] = [
     [">=01.02.03", ">=1.2.3"],
-    ["~1.02.03beta", ">=1.2.3-beta <1.3.0"]
+    ["~1.02.03beta", ">=1.2.3-beta <1.3.0"],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const loose = v[0];
     const comps = v[1];
-    assertThrows(function() {
+    assertThrows(function () {
       new semver.Range(loose);
     });
     assertEquals(new semver.Range(loose, true).range, comps);
   });
 });
 
-test(function missingRangeParameterInRangeIntersect(): void {
+Deno.test("missingRangeParameterInRangeIntersect", function (): void {
   assertThrows(
-    function() {
+    function () {
       new semver.Range("1.0.0").intersects(undefined);
     },
     TypeError,
-    "a Range is required"
+    "a Range is required",
   );
 });
 
-test(function tostrings(): void {
+Deno.test("tostrings", function (): void {
   assertEquals(new semver.Range(">= v1.2.3").toString(), ">=1.2.3");
 });
 
-test(function rangesIntersect(): void {
+Deno.test("rangesIntersect", function (): void {
   const versions: [string, string, boolean][] = [
     ["1.3.0 || <1.0.0 >2.0.0", "1.3.0 || <1.0.0 >2.0.0", true],
     ["<1.0.0 >2.0.0", ">0.0.0", false],
@@ -385,12 +385,12 @@ test(function rangesIntersect(): void {
     [
       "<1.6.16 || >=1.7.0 <1.7.11 || >=1.8.0 <1.8.2",
       ">=1.6.16 <1.7.0 || >=1.7.11 <1.8.0 || >=1.8.2",
-      false
+      false,
     ],
     [
       "<=1.6.16 || >=1.7.0 <1.7.11 || >=1.8.0 <1.8.2",
       ">=1.6.16 <1.7.0 || >=1.7.11 <1.8.0 || >=1.8.2",
-      true
+      true,
     ],
     [">=1.0.0", "<=1.0.0", true],
     [">1.0.0 <1.0.0", "<=0.0.0", false],
@@ -433,10 +433,10 @@ test(function rangesIntersect(): void {
     ["1.3.0 || <1.0.0 >2.0.0", "x", true],
     ["1.x", "1.3.0 || <1.0.0 >2.0.0", true],
     ["*", "*", true],
-    ["x", "", true]
+    ["x", "", true],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const range1 = new semver.Range(v[0]);
     const range2 = new semver.Range(v[1]);
     const expect = v[2];

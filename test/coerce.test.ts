@@ -1,19 +1,19 @@
-import { test, assertEquals } from "./deps.ts";
+import { assertEquals } from "./deps.ts";
 
 import * as semver from "../mod.ts";
 
 function r(text: string) {
-  return function(count: number): string {
+  return function (count: number): string {
     return text.repeat(count);
   };
 }
 
-test(function coerce(): void {
+Deno.test("coerce", function (): void {
   // Expected to be null (cannot be coerced).
   [
     null,
     { version: "1.2.3" },
-    function() {
+    function () {
       return "1.2.3";
     },
     "",
@@ -28,15 +28,15 @@ test(function coerce(): void {
     r("9")(16) + ".4.7.4",
     r("9")(16) + "." + r("2")(16) + "." + r("3")(16),
     r("1")(16) + "." + r("9")(16) + "." + r("3")(16),
-    r("1")(16) + "." + r("2")(16) + "." + r("9")(16)
-  ].forEach(function(input) {
+    r("1")(16) + "." + r("2")(16) + "." + r("9")(16),
+  ].forEach(function (input) {
     var msg = "coerce(" + input + ") should be null";
     assertEquals(semver.coerce(input as any), null, msg);
   });
 
   // Expected to be the valid.
   [
-    [semver.parse("1.2.3"), "1.2.3"],
+    [semver.parse("1.2.3")!.version, "1.2.3"],
     [".1", "1.0.0"],
     [".1.", "1.0.0"],
     ["..1", "1.0.0"],
@@ -89,12 +89,12 @@ test(function coerce(): void {
     ["1.2." + r("3")(17) + ".4", "1.2.0"],
     [
       r("1")(17) + "." + r("2")(16) + "." + r("3")(16),
-      r("2")(16) + "." + r("3")(16) + ".0"
+      r("2")(16) + "." + r("3")(16) + ".0",
     ],
     [r("1")(16) + "." + r("2")(17) + "." + r("3")(16), r("1")(16) + ".0.0"],
     [
       r("1")(16) + "." + r("2")(16) + "." + r("3")(17),
-      r("1")(16) + "." + r("2")(16) + ".0"
+      r("1")(16) + "." + r("2")(16) + ".0",
     ],
     ["11" + r(".1")(126), "11.1.1"],
     [r("1")(16), r("1")(16) + ".0.0"],
@@ -104,16 +104,16 @@ test(function coerce(): void {
     ["1.2." + r("3")(16) + ".4", "1.2." + r("3")(16)],
     [
       r("1")(16) + "." + r("2")(16) + "." + r("3")(16),
-      r("1")(16) + "." + r("2")(16) + "." + r("3")(16)
+      r("1")(16) + "." + r("2")(16) + "." + r("3")(16),
     ],
     ["1.2.3." + r("4")(252) + ".5", "1.2.3"],
     ["1.2.3." + r("4")(1024), "1.2.3"],
-    [r("1")(17) + ".4.7.4", "4.7.4"]
-  ].forEach(function(tuple: string[]) {
+    [r("1")(17) + ".4.7.4", "4.7.4"],
+  ].forEach(function (tuple: string[]) {
     var input = tuple[0];
     var expected = tuple[1];
     var msg = "coerce(" + input + ") should become " + expected;
-    assertEquals(semver.coerce(input).version, expected, msg);
+    assertEquals(semver.coerce(input)!.version, expected, msg);
   });
 
   assertEquals(semver.valid(semver.coerce("42.6.7.9.3-alpha")), "42.6.7");

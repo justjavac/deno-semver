@@ -1,8 +1,8 @@
-import { test, assert } from "./deps.ts";
+import { assert } from "./deps.ts";
 
 import * as semver from "../mod.ts";
 
-test(function gtr(): void {
+Deno.test("gtr", function (): void {
   // [range, version, loose]
   // Version should be greater than range
   const versions: ReadonlyArray<[string, string, boolean?]> = [
@@ -65,10 +65,10 @@ test(function gtr(): void {
     ["<1", "1.0.0beta", true],
     ["< 1", "1.0.0beta", true],
     ["=0.7.x", "0.8.2"],
-    ["<0.7.x", "0.7.2"]
+    ["<0.7.x", "0.7.2"],
   ];
 
-  versions.forEach(function(tuple) {
+  versions.forEach(function (tuple) {
     const range = tuple[0];
     const version = tuple[1];
     const loose = tuple[2] || false;
@@ -77,7 +77,7 @@ test(function gtr(): void {
   });
 });
 
-test(function gtrNegative(): void {
+Deno.test("gtrNegative", function (): void {
   // [range, version, loose]
   // Version should be greater than range
   const versions: ReadonlyArray<[string, string, boolean?]> = [
@@ -161,10 +161,10 @@ test(function gtrNegative(): void {
     ["^0.1.0 || ~3.0.1 || 5.0.0", "3.2.0"],
     ["^0.1.0 || ~3.0.1 || 5.0.0", "1.0.0beta", true],
     ["^0.1.0 || ~3.0.1 || 5.0.0", "5.0.0-0", true],
-    ["^0.1.0 || ~3.0.1 || >4 <=5.0.0", "3.5.0"]
+    ["^0.1.0 || ~3.0.1 || >4 <=5.0.0", "3.5.0"],
   ];
 
-  versions.forEach(function(tuple) {
+  versions.forEach(function (tuple) {
     const range = tuple[0];
     const version = tuple[1];
     const loose = tuple[2] || false;

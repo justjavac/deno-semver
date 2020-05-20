@@ -1,10 +1,10 @@
-import { test, assert, assertEquals } from "./deps.ts";
+import { assert, assertEquals } from "./deps.ts";
 
 import * as semver from "../mod.ts";
 
 type Version = string;
 
-test(function equality(): void {
+Deno.test("equality", function (): void {
   // [version1, version2, loose]
   // version1 should be equivalent to version2
   const versions: [Version, Version, boolean?][] = [
@@ -44,13 +44,13 @@ test(function equality(): void {
     ["1.2.3+build", " = 1.2.3+otherbuild", true],
     ["1.2.3-beta+build", "1.2.3-beta+otherbuild"],
     ["1.2.3+build", "1.2.3+otherbuild"],
-    ["  v1.2.3+build", "1.2.3+otherbuild"]
+    ["  v1.2.3+build", "1.2.3+otherbuild"],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const v0 = v[0];
     const v1 = v[1];
-    const loose: boolean = v[2];
+    const loose: boolean | undefined = v[2];
 
     assert(semver.eq(v0, v1, loose), "eq('" + v0 + "', '" + v1 + "')");
     assert(!semver.neq(v0, v1, loose), "!neq('" + v0 + "', '" + v1 + "')");
@@ -63,9 +63,9 @@ test(function equality(): void {
       semver.cmp(
         new semver.SemVer(v0, { loose: loose }),
         "===",
-        new semver.SemVer(v1, { loose: loose })
+        new semver.SemVer(v1, { loose: loose }),
       ),
-      "!cmp(" + v0 + "===" + v1 + ") object"
+      "!cmp(" + v0 + "===" + v1 + ") object",
     );
 
     assert(semver.cmp(v0, "!==", v1, loose), "cmp(" + v0 + "!==" + v1 + ")");
@@ -74,9 +74,9 @@ test(function equality(): void {
       !semver.cmp(
         new semver.SemVer(v0, loose),
         "!==",
-        new semver.SemVer(v1, loose)
+        new semver.SemVer(v1, loose),
       ),
-      "cmp(" + v0 + "!==" + v1 + ") object"
+      "cmp(" + v0 + "!==" + v1 + ") object",
     );
 
     assert(!semver.gt(v0, v1, loose), "!gt('" + v0 + "', '" + v1 + "')");

@@ -1,10 +1,10 @@
-import { test, assert } from "./deps.ts";
+import { assert } from "./deps.ts";
 
 import * as semver from "../mod.ts";
 
-test(function minVersion(): void {
+Deno.test("minVersion", function (): void {
   // [range, version, loose]
-  const versions: [string, string, boolean?][] = [
+  const versions: [string, string | null, boolean?][] = [
     // Stars
     ["*", "0.0.0"],
     ["* || >=2", "0.0.0"],
@@ -63,10 +63,10 @@ test(function minVersion(): void {
     [">2 || >1.0.0-beta", "1.0.0-beta.0"],
 
     // Impossible range
-    [">4 <3", null]
+    [">4 <3", null],
   ];
 
-  versions.forEach(function(tuple) {
+  versions.forEach(function (tuple) {
     const range = tuple[0];
     const version = tuple[1];
     const loose = tuple[2] || false;
