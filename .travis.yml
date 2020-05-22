@@ -2,7 +2,7 @@ sudo: false
 
 env:
   global:
-    - DENO_VERSION=v0.17.0
+    - DENO_VERSION=v1.0.0
 
 cache:
   directories:
