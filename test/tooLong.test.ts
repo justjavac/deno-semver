@@ -1,11 +1,11 @@
-import { test, assert, assertEquals, assertThrows } from "./deps.ts";
+import { assert, assertEquals, assertThrows } from "./deps.ts";
 
 import * as semver from "../mod.ts";
 
-test(function versionIsTooLong(): void {
+Deno.test("versionIsTooLong", function (): void {
   const v: string = "1.2." + new Array(256).join("1");
 
-  assertThrows(function() {
+  assertThrows(function () {
     new semver.SemVer(v);
   });
   assertEquals(semver.valid(v, false), null);
@@ -13,9 +13,9 @@ test(function versionIsTooLong(): void {
   assertEquals(semver.inc(v, "patch"), null);
 });
 
-test(function tooBig(): void {
+Deno.test("tooBig", function (): void {
   var v = "1.2." + new Array(100).join("1");
-  assertThrows(function() {
+  assertThrows(function () {
     new semver.SemVer(v);
   });
   assertEquals(semver.valid(v, false), null);
@@ -23,8 +23,8 @@ test(function tooBig(): void {
   assertEquals(semver.inc(v, "patch"), null);
 });
 
-test(function parsingNullDoesNotThrow(): void {
+Deno.test("parsingNullDoesNotThrow", function (): void {
   assertEquals(semver.parse(null), null);
   assertEquals(semver.parse({} as semver.SemVer), null);
-  assertEquals(semver.parse(new semver.SemVer("1.2.3")).version, "1.2.3");
+  assertEquals(semver.parse(new semver.SemVer("1.2.3"))!.version, "1.2.3");
 });

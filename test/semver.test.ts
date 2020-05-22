@@ -1,24 +1,24 @@
-import { test, assert, assertEquals, assertThrows } from "./deps.ts";
+import { assert, assertEquals, assertThrows } from "./deps.ts";
 
 import * as semver from "../mod.ts";
 
 type Options = semver.Options | boolean;
 
-test(function invalidVersion(): void {
+Deno.test("invalidVersion", function (): void {
   const versions = ["1.2.3.4", "NOT VALID", 1.2, null, "Infinity.NaN.Infinity"];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     assertThrows(
-      function() {
+      function () {
         new semver.SemVer(v as any);
       },
       TypeError,
-      `Invalid Version: ${v}`
+      `Invalid Version: ${v}`,
     );
   });
 });
 
-test(function maxSatisfying(): void {
+Deno.test("maxSatisfying", function (): void {
   const versions: [string[], string, string, Options?][] = [
     [["1.2.3", "1.2.4"], "1.2", "1.2.4"],
     [["1.2.4", "1.2.3"], "1.2", "1.2.4"],
@@ -33,15 +33,15 @@ test(function maxSatisfying(): void {
         "2.0.0b2",
         "2.0.0b3",
         "2.0.0",
-        "2.1.0"
+        "2.1.0",
       ],
       "~2.0.0",
       "2.0.0",
-      true
-    ]
+      true,
+    ],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const versions = v[0];
     const range = v[1];
     const expect = v[2];
@@ -51,7 +51,7 @@ test(function maxSatisfying(): void {
   });
 });
 
-test(function minSatisfying(): void {
+Deno.test("minSatisfying", function (): void {
   const versions: [string[], string, string, Options?][] = [
     [["1.2.3", "1.2.4"], "1.2", "1.2.3"],
     [["1.2.4", "1.2.3"], "1.2", "1.2.3"],
@@ -66,15 +66,15 @@ test(function minSatisfying(): void {
         "2.0.0b2",
         "2.0.0b3",
         "2.0.0",
-        "2.1.0"
+        "2.1.0",
       ],
       "~2.0.0",
       "2.0.0",
-      true
-    ]
+      true,
+    ],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const versions = v[0];
     const range = v[1];
     const expect = v[2];
@@ -84,17 +84,17 @@ test(function minSatisfying(): void {
   });
 });
 
-test(function outsideWithBadHiloThrows(): void {
+Deno.test("outsideWithBadHiloThrows", function (): void {
   assertThrows(
-    function() {
+    function () {
       semver.outside("1.2.3", ">1.5.0", "blerg" as any, true);
     },
     TypeError,
-    'Must provide a hilo val of "<" or ">"'
+    'Must provide a hilo val of "<" or ">"',
   );
 });
 
-test(function sorting(): void {
+Deno.test("sorting", function (): void {
   const list = ["1.2.3+1", "1.2.3+0", "1.2.3", "5.9.6", "0.1.2"];
   const sorted = ["0.1.2", "1.2.3", "1.2.3+0", "1.2.3+1", "5.9.6"];
   const rsorted = ["5.9.6", "1.2.3+1", "1.2.3+0", "1.2.3", "0.1.2"];
@@ -102,13 +102,13 @@ test(function sorting(): void {
   assertEquals(semver.rsort(list), rsorted);
 });
 
-test(function badRangesInMaxOrMinSatisfying(): void {
+Deno.test("badRangesInMaxOrMinSatisfying", function (): void {
   const r = "some frogs and sneks-v2.5.6";
   assertEquals(semver.maxSatisfying([], r), null);
   assertEquals(semver.minSatisfying([], r), null);
 });
 
-test(function bigNumericPrerelease(): void {
+Deno.test("bigNumericPrerelease", function (): void {
   const r = new semver.SemVer("1.2.3-beta." + Number.MAX_SAFE_INTEGER + "0");
   assertEquals(r.prerelease, ["beta", "90071992547409910"]);
 });

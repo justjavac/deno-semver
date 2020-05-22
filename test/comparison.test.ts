@@ -1,11 +1,11 @@
-import { test, assert, assertEquals, assertThrows } from "./deps.ts";
+import { assert, assertEquals, assertThrows } from "./deps.ts";
 
 import * as semver from "../mod.ts";
 
 type Version = string;
 type Options = semver.Options | boolean;
 
-test(function comparison(): void {
+Deno.test("comparison", function (): void {
   // [version1, version2, loose]
   // version1 should be greater than version2
   const versions: [Version, Version, Options?][] = [
@@ -39,10 +39,10 @@ test(function comparison(): void {
     ["1.2.3-a.b", "1.2.3-a"],
     ["1.2.3-a.b.c.10.d.5", "1.2.3-a.b.c.5.d.100"],
     ["1.2.3-r2", "1.2.3-r100"],
-    ["1.2.3-r100", "1.2.3-R2"]
+    ["1.2.3-r100", "1.2.3-R2"],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const v0 = v[0];
     const v1 = v[1];
     const loose = v[2];
@@ -55,24 +55,24 @@ test(function comparison(): void {
     assert(semver.neq(v0, v1, loose), "neq('" + v0 + "', '" + v1 + "')");
     assert(
       semver.cmp(v1, "==", v1, loose),
-      "cmp('" + v1 + "' == '" + v1 + "')"
+      "cmp('" + v1 + "' == '" + v1 + "')",
     );
     assert(
       semver.cmp(v0, ">=", v1, loose),
-      "cmp('" + v0 + "' >= '" + v1 + "')"
+      "cmp('" + v0 + "' >= '" + v1 + "')",
     );
     assert(
       semver.cmp(v1, "<=", v0, loose),
-      "cmp('" + v1 + "' <= '" + v0 + "')"
+      "cmp('" + v1 + "' <= '" + v0 + "')",
     );
     assert(
       semver.cmp(v0, "!=", v1, loose),
-      "cmp('" + v0 + "' != '" + v1 + "')"
+      "cmp('" + v0 + "' != '" + v1 + "')",
     );
   });
 });
 
-test(function compareBuild(): void {
+Deno.test("compareBuild", function (): void {
   const noBuild = new semver.SemVer("1.0.0");
   const build0 = new semver.SemVer("1.0.0+0");
   const build1 = new semver.SemVer("1.0.0+1");
@@ -87,14 +87,14 @@ test(function compareBuild(): void {
   assertEquals(build10.compareBuild(build1), 1);
 });
 
-test(function rcompare(): void {
+Deno.test("rcompare", function (): void {
   assertEquals(semver.rcompare("1.0.0", "1.0.1"), 1);
   assertEquals(semver.rcompare("1.0.0", "1.0.0"), 0);
   assertEquals(semver.rcompare("1.0.0+0", "1.0.0"), 0);
   assertEquals(semver.rcompare("1.0.1", "1.0.0"), -1);
 });
 
-test(function compareMainVsPre(): void {
+Deno.test("compareMainVsPre", function (): void {
   const s = new semver.SemVer("1.2.3");
   assertEquals(s.compareMain("2.3.4"), -1);
   assertEquals(s.compareMain("1.2.4"), -1);
@@ -109,9 +109,13 @@ test(function compareMainVsPre(): void {
   assertEquals(p.comparePre("1.2.3-alpha.0.2"), 1);
 });
 
-test(function compareIdentifierst(): void {
-  const set = [["1", "2"], ["alpha", "beta"], ["0", "beta"]];
-  set.forEach(function(ab) {
+Deno.test("compareIdentifierst", function (): void {
+  const set = [
+    ["1", "2"],
+    ["alpha", "beta"],
+    ["0", "beta"],
+  ];
+  set.forEach(function (ab) {
     const a = ab[0];
     const b = ab[1];
     assertEquals(semver.compareIdentifiers(a, b), -1);
@@ -121,38 +125,38 @@ test(function compareIdentifierst(): void {
   assertEquals(semver.rcompareIdentifiers("0", "0"), 0);
 });
 
-test(function strictVsLooseVersion(): void {
+Deno.test("strictVsLooseVersion", function (): void {
   [
     ["=1.2.3", "1.2.3"],
     ["01.02.03", "1.2.3"],
     ["1.2.3-beta.01", "1.2.3-beta.1"],
     ["   =1.2.3", "1.2.3"],
-    ["1.2.3foo", "1.2.3-foo"]
-  ].forEach(function(v) {
+    ["1.2.3foo", "1.2.3-foo"],
+  ].forEach(function (v) {
     const loose = v[0];
     const strict = v[1];
-    assertThrows(function() {
+    assertThrows(function () {
       new semver.SemVer(loose);
     });
     const lv = new semver.SemVer(loose, true);
     assertEquals(lv.version, strict);
     assert(semver.eq(loose, strict, true));
-    assertThrows(function() {
+    assertThrows(function () {
       semver.eq(loose, strict);
     });
-    assertThrows(function() {
+    assertThrows(function () {
       new semver.SemVer(strict).compare(loose);
     });
     assertEquals(semver.compareLoose(v[0], v[1]), 0);
   });
 });
 
-test(function invalidCmpUsage(): void {
+Deno.test("invalidCmpUsage", function (): void {
   assertThrows(
-    function() {
+    function () {
       semver.cmp("1.2.3", "a frog" as any, "4.5.6");
     },
     TypeError,
-    "Invalid operator: a frog"
+    "Invalid operator: a frog",
   );
 });

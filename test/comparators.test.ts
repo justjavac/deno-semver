@@ -1,11 +1,11 @@
-import { test, assert, assertEquals, assertThrows } from "./deps.ts";
+import { assert, assertEquals, assertThrows } from "./deps.ts";
 
 import * as semver from "../mod.ts";
 
 type Version = string;
 type Options = semver.Options | boolean;
 
-test(function comparators(): void {
+Deno.test("comparators", function (): void {
   // [range, comparators]
   // turn range into a set of individual comparators
   const versions: [Version, string[][]][] = [
@@ -45,13 +45,37 @@ test(function comparators(): void {
     ["||", [[""], [""]]],
     ["2.x.x", [[">=2.0.0", "<3.0.0"]]],
     ["1.2.x", [[">=1.2.0", "<1.3.0"]]],
-    ["1.2.x || 2.x", [[">=1.2.0", "<1.3.0"], [">=2.0.0", "<3.0.0"]]],
-    ["1.2.x || 2.x", [[">=1.2.0", "<1.3.0"], [">=2.0.0", "<3.0.0"]]],
+    [
+      "1.2.x || 2.x",
+      [
+        [">=1.2.0", "<1.3.0"],
+        [">=2.0.0", "<3.0.0"],
+      ],
+    ],
+    [
+      "1.2.x || 2.x",
+      [
+        [">=1.2.0", "<1.3.0"],
+        [">=2.0.0", "<3.0.0"],
+      ],
+    ],
     ["x", [[""]]],
     ["2.*.*", [[">=2.0.0", "<3.0.0"]]],
     ["1.2.*", [[">=1.2.0", "<1.3.0"]]],
-    ["1.2.* || 2.*", [[">=1.2.0", "<1.3.0"], [">=2.0.0", "<3.0.0"]]],
-    ["1.2.* || 2.*", [[">=1.2.0", "<1.3.0"], [">=2.0.0", "<3.0.0"]]],
+    [
+      "1.2.* || 2.*",
+      [
+        [">=1.2.0", "<1.3.0"],
+        [">=2.0.0", "<3.0.0"],
+      ],
+    ],
+    [
+      "1.2.* || 2.*",
+      [
+        [">=1.2.0", "<1.3.0"],
+        [">=2.0.0", "<3.0.0"],
+      ],
+    ],
     ["*", [[""]]],
     ["2", [[">=2.0.0", "<3.0.0"]]],
     ["2.3", [[">=2.3.0", "<2.4.0"]]],
@@ -77,10 +101,10 @@ test(function comparators(): void {
     ["1.2.3 - 3.4", [[">=1.2.3", "<3.5.0"]]],
     ["1.2.3 - 3", [[">=1.2.3", "<4.0.0"]]],
     [">*", [["<0.0.0"]]],
-    ["<*", [["<0.0.0"]]]
+    ["<*", [["<0.0.0"]]],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const pre = v[0];
     const wanted = v[1];
     const found = semver.toComparators(v[0]);
@@ -89,7 +113,7 @@ test(function comparators(): void {
   });
 });
 
-test(function test(): void {
+Deno.test("test", function (): void {
   const c = new semver.Comparator(">=1.2.3");
   assert(c.test("1.2.4"));
   const c2 = new semver.Comparator(c);
@@ -98,7 +122,7 @@ test(function test(): void {
   assert(c3.test("1.2.4"));
 });
 
-test(function intersect(): void {
+Deno.test("intersect", function (): void {
   const versions: [string, string, boolean][] = [
     // One is a Version
     ["1.3.0", ">=1.3.0", true],
@@ -129,10 +153,10 @@ test(function intersect(): void {
     [">=1.0.0", "<=2.0.0", true],
     [">1.0.0", "<=2.0.0", true],
     ["<=2.0.0", ">1.0.0", true],
-    ["<=1.0.0", ">=2.0.0", false]
+    ["<=1.0.0", ">=2.0.0", false],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const comparator1 = new semver.Comparator(v[0]);
     const comparator2 = new semver.Comparator(v[1]);
     const expect = v[2];
@@ -161,6 +185,6 @@ test(function intersect(): void {
   });
 });
 
-test(function tostrings(): void {
+Deno.test("tostrings", function (): void {
   assertEquals(new semver.Comparator(">= v1.2.3").toString(), ">=1.2.3");
 });

@@ -1,5 +1,3 @@
-import { runTests } from "./deps.ts";
-
 import "./semver.test.ts";
 
 import "./major.test.ts";
@@ -20,5 +18,3 @@ import "./tooLong.test.ts";
 import "./ltr.test.ts";
 import "./clean.test.ts";
 import "./coerce.test.ts";
-
-runTests();

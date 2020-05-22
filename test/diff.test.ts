@@ -1,13 +1,13 @@
-import { test, assert, assertEquals, assertThrows } from "./deps.ts";
+import { assert, assertEquals, assertThrows } from "./deps.ts";
 
 import * as semver from "../mod.ts";
 
 type Version = string;
 
-test(function diff(): void {
+Deno.test("diff", function (): void {
   //  [version1, version2, result]
   //  diff(version1, version2) -> result
-  const versions: [Version, Version, semver.ReleaseType][] = [
+  const versions: [Version, Version, semver.ReleaseType | null][] = [
     ["1.2.3", "0.2.3", "major"],
     ["1.4.5", "0.2.3", "major"],
     ["1.2.3", "2.0.0-pre", "premajor"],
@@ -19,10 +19,10 @@ test(function diff(): void {
     ["0.0.1", "0.0.1-pre-2", "prerelease"],
     ["1.1.0", "1.1.0-pre", "prerelease"],
     ["1.1.0-pre-1", "1.1.0-pre-2", "prerelease"],
-    ["1.0.0", "1.0.0", null]
+    ["1.0.0", "1.0.0", null],
   ];
 
-  versions.forEach(function(v) {
+  versions.forEach(function (v) {
     const version1 = v[0];
     const version2 = v[1];
     const wanted = v[2];
