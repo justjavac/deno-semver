@@ -72,28 +72,26 @@ src[MAINVERSIONLOOSE] = `(${nidl})\\.(${nidl})\\.(${nidl})`;
 // A numeric identifier, or a non-numeric identifier.
 
 const PRERELEASEIDENTIFIER: number = R++;
-src[PRERELEASEIDENTIFIER] =
-  "(?:" + src[NUMERICIDENTIFIER] + "|" + src[NONNUMERICIDENTIFIER] + ")";
+src[PRERELEASEIDENTIFIER] = "(?:" + src[NUMERICIDENTIFIER] + "|" +
+  src[NONNUMERICIDENTIFIER] + ")";
 
 const PRERELEASEIDENTIFIERLOOSE: number = R++;
-src[PRERELEASEIDENTIFIERLOOSE] =
-  "(?:" + src[NUMERICIDENTIFIERLOOSE] + "|" + src[NONNUMERICIDENTIFIER] + ")";
+src[PRERELEASEIDENTIFIERLOOSE] = "(?:" + src[NUMERICIDENTIFIERLOOSE] + "|" +
+  src[NONNUMERICIDENTIFIER] + ")";
 
 // ## Pre-release Version
 // Hyphen, followed by one or more dot-separated pre-release version
 // identifiers.
 
 const PRERELEASE: number = R++;
-src[PRERELEASE] =
-  "(?:-(" +
+src[PRERELEASE] = "(?:-(" +
   src[PRERELEASEIDENTIFIER] +
   "(?:\\." +
   src[PRERELEASEIDENTIFIER] +
   ")*))";
 
 const PRERELEASELOOSE: number = R++;
-src[PRERELEASELOOSE] =
-  "(?:-?(" +
+src[PRERELEASELOOSE] = "(?:-?(" +
   src[PRERELEASEIDENTIFIERLOOSE] +
   "(?:\\." +
   src[PRERELEASEIDENTIFIERLOOSE] +
@@ -110,8 +108,8 @@ src[BUILDIDENTIFIER] = "[0-9A-Za-z-]+";
 // identifiers.
 
 const BUILD: number = R++;
-src[BUILD] =
-  "(?:\\+(" + src[BUILDIDENTIFIER] + "(?:\\." + src[BUILDIDENTIFIER] + ")*))";
+src[BUILD] = "(?:\\+(" + src[BUILDIDENTIFIER] + "(?:\\." +
+  src[BUILDIDENTIFIER] + ")*))";
 
 // ## Full Version String
 // A main version, followed optionally by a pre-release version and
@@ -123,16 +121,15 @@ src[BUILD] =
 // comparison.
 
 const FULL: number = R++;
-const FULLPLAIN =
-  "v?" + src[MAINVERSION] + src[PRERELEASE] + "?" + src[BUILD] + "?";
+const FULLPLAIN = "v?" + src[MAINVERSION] + src[PRERELEASE] + "?" + src[BUILD] +
+  "?";
 
 src[FULL] = "^" + FULLPLAIN + "$";
 
 // like full, but allows v1.2.3 and =1.2.3, which people do sometimes.
 // also, 1.0.0alpha1 (prerelease without the hyphen) which is pretty
 // common in the npm registry.
-const LOOSEPLAIN: string =
-  "[v=\\s]*" +
+const LOOSEPLAIN: string = "[v=\\s]*" +
   src[MAINVERSIONLOOSE] +
   src[PRERELEASELOOSE] +
   "?" +
@@ -154,8 +151,7 @@ const XRANGEIDENTIFIER: number = R++;
 src[XRANGEIDENTIFIER] = src[NUMERICIDENTIFIER] + "|x|X|\\*";
 
 const XRANGEPLAIN: number = R++;
-src[XRANGEPLAIN] =
-  "[v=\\s]*(" +
+src[XRANGEPLAIN] = "[v=\\s]*(" +
   src[XRANGEIDENTIFIER] +
   ")" +
   "(?:\\.(" +
@@ -172,8 +168,7 @@ src[XRANGEPLAIN] =
   ")?)?";
 
 const XRANGEPLAINLOOSE: number = R++;
-src[XRANGEPLAINLOOSE] =
-  "[v=\\s]*(" +
+src[XRANGEPLAINLOOSE] = "[v=\\s]*(" +
   src[XRANGEIDENTIFIERLOOSE] +
   ")" +
   "(?:\\.(" +
@@ -197,8 +192,7 @@ src[XRANGELOOSE] = "^" + src[GTLT] + "\\s*" + src[XRANGEPLAINLOOSE] + "$";
 // Coercion.
 // Extract anything that could conceivably be a part of a valid semver
 const COERCE: number = R++;
-src[COERCE] =
-  "(?:^|[^\\d])" +
+src[COERCE] = "(?:^|[^\\d])" +
   "(\\d{1," +
   MAX_SAFE_COMPONENT_LENGTH +
   "})" +
@@ -249,8 +243,8 @@ src[COMPARATOR] = "^" + src[GTLT] + "\\s*(" + FULLPLAIN + ")$|^$";
 // An expression to strip any whitespace between the gtlt and the thing
 // it modifies, so that `> 1.2.3` ==> `>1.2.3`
 const COMPARATORTRIM: number = R++;
-src[COMPARATORTRIM] =
-  "(\\s*)" + src[GTLT] + "\\s*(" + LOOSEPLAIN + "|" + src[XRANGEPLAIN] + ")";
+src[COMPARATORTRIM] = "(\\s*)" + src[GTLT] + "\\s*(" + LOOSEPLAIN + "|" +
+  src[XRANGEPLAIN] + ")";
 
 // this one has to use the /g flag
 re[COMPARATORTRIM] = new RegExp(src[COMPARATORTRIM], "g");
@@ -261,8 +255,7 @@ const comparatorTrimReplace: string = "$1$2$3";
 // checked against either the strict or loose comparator form
 // later.
 const HYPHENRANGE: number = R++;
-src[HYPHENRANGE] =
-  "^\\s*(" +
+src[HYPHENRANGE] = "^\\s*(" +
   src[XRANGEPLAIN] +
   ")" +
   "\\s+-\\s+" +
@@ -272,8 +265,7 @@ src[HYPHENRANGE] =
   "\\s*$";
 
 const HYPHENRANGELOOSE: number = R++;
-src[HYPHENRANGELOOSE] =
-  "^\\s*(" +
+src[HYPHENRANGELOOSE] = "^\\s*(" +
   src[XRANGEPLAINLOOSE] +
   ")" +
   "\\s+-\\s+" +
@@ -1063,8 +1055,8 @@ export class Range {
     this.raw = range;
     this.set = range
       .split(/\s*\|\|\s*/)
-      .map(range => this.parseRange(range.trim()))
-      .filter(c => {
+      .map((range) => this.parseRange(range.trim()))
+      .filter((c) => {
         // throw out any that are not relevant for whatever reason
         return c.length;
       });
@@ -1078,7 +1070,7 @@ export class Range {
 
   format(): string {
     this.range = this.set
-      .map(comps => comps.join(" ").trim())
+      .map((comps) => comps.join(" ").trim())
       .join("||")
       .trim();
     return this.range;
@@ -1109,17 +1101,17 @@ export class Range {
     const compRe: RegExp = loose ? re[COMPARATORLOOSE] : re[COMPARATOR];
     let set: string[] = range
       .split(" ")
-      .map(comp => parseComparator(comp, this.options))
+      .map((comp) => parseComparator(comp, this.options))
       .join(" ")
       .split(/\s+/);
     if (this.options.loose) {
       // in loose mode, throw out any that are not valid comparators
-      set = set.filter(comp => {
+      set = set.filter((comp) => {
         return !!comp.match(compRe);
       });
     }
 
-    return set.map(comp => new Comparator(comp, this.options));
+    return set.map((comp) => new Comparator(comp, this.options));
   }
 
   test(version: string | SemVer): boolean {
@@ -1140,14 +1132,14 @@ export class Range {
       throw new TypeError("a Range is required");
     }
 
-    return this.set.some(thisComparators => {
+    return this.set.some((thisComparators) => {
       return (
         isSatisfiable(thisComparators, optionsOrLoose) &&
-        range.set.some(rangeComparators => {
+        range.set.some((rangeComparators) => {
           return (
             isSatisfiable(rangeComparators, optionsOrLoose) &&
-            thisComparators.every(thisComparator => {
-              return rangeComparators.every(rangeComparator => {
+            thisComparators.every((thisComparator) => {
+              return rangeComparators.every((rangeComparator) => {
                 return thisComparator.intersects(
                   rangeComparator,
                   optionsOrLoose,
@@ -1217,7 +1209,7 @@ function isSatisfiable(
   let testComparator = remainingComparators.pop();
 
   while (result && remainingComparators.length) {
-    result = remainingComparators.every(otherComparator => {
+    result = remainingComparators.every((otherComparator) => {
       return testComparator?.intersects(otherComparator, options);
     });
 
@@ -1232,9 +1224,9 @@ export function toComparators(
   range: string | Range,
   optionsOrLoose?: boolean | Options,
 ): string[][] {
-  return new Range(range, optionsOrLoose).set.map(comp => {
+  return new Range(range, optionsOrLoose).set.map((comp) => {
     return comp
-      .map(c => c.value)
+      .map((c) => c.value)
       .join(" ")
       .trim()
       .split(" ");
@@ -1266,7 +1258,7 @@ function replaceTildes(comp: string, options: Options): string {
   return comp
     .trim()
     .split(/\s+/)
-    .map(comp => replaceTilde(comp, options))
+    .map((comp) => replaceTilde(comp, options))
     .join(" ");
 }
 
@@ -1285,8 +1277,7 @@ function replaceTilde(comp: string, options: Options): string {
         // ~1.2 == >=1.2.0 <1.3.0
         ret = ">=" + M + "." + m + ".0 <" + M + "." + (+m + 1) + ".0";
       } else if (pr) {
-        ret =
-          ">=" +
+        ret = ">=" +
           M +
           "." +
           m +
@@ -1319,7 +1310,7 @@ function replaceCarets(comp: string, options: Options): string {
   return comp
     .trim()
     .split(/\s+/)
-    .map(comp => replaceCaret(comp, options))
+    .map((comp) => replaceCaret(comp, options))
     .join(" ");
 }
 
@@ -1341,8 +1332,7 @@ function replaceCaret(comp: string, options: Options): string {
     } else if (pr) {
       if (M === "0") {
         if (m === "0") {
-          ret =
-            ">=" +
+          ret = ">=" +
             M +
             "." +
             m +
@@ -1357,8 +1347,7 @@ function replaceCaret(comp: string, options: Options): string {
             "." +
             (+p + 1);
         } else {
-          ret =
-            ">=" +
+          ret = ">=" +
             M +
             "." +
             m +
@@ -1373,14 +1362,14 @@ function replaceCaret(comp: string, options: Options): string {
             ".0";
         }
       } else {
-        ret =
-          ">=" + M + "." + m + "." + p + "-" + pr + " <" + (+M + 1) + ".0.0";
+        ret = ">=" + M + "." + m + "." + p + "-" + pr + " <" + (+M + 1) +
+          ".0.0";
       }
     } else {
       if (M === "0") {
         if (m === "0") {
-          ret =
-            ">=" + M + "." + m + "." + p + " <" + M + "." + m + "." + (+p + 1);
+          ret = ">=" + M + "." + m + "." + p + " <" + M + "." + m + "." +
+            (+p + 1);
         } else {
           ret = ">=" + M + "." + m + "." + p + " <" + M + "." + (+m + 1) + ".0";
         }
@@ -1396,7 +1385,7 @@ function replaceCaret(comp: string, options: Options): string {
 function replaceXRanges(comp: string, options: Options): string {
   return comp
     .split(/\s+/)
-    .map(comp => replaceXRange(comp, options))
+    .map((comp) => replaceXRange(comp, options))
     .join(" ");
 }
 
@@ -1542,7 +1531,7 @@ export function maxSatisfying<T extends string | SemVer>(
   } catch (er) {
     return null;
   }
-  versions.forEach(v => {
+  versions.forEach((v) => {
     if (rangeObj.test(v)) {
       // satisfies(v, range, options)
       if (!max || (maxSV && maxSV.compare(v) === -1)) {
@@ -1568,7 +1557,7 @@ export function minSatisfying<T extends string | SemVer>(
   } catch (er) {
     return null;
   }
-  versions.forEach(v => {
+  versions.forEach((v) => {
     if (rangeObj.test(v)) {
       // satisfies(v, range, options)
       if (!min || minSV.compare(v) === 1) {
@@ -1601,7 +1590,7 @@ export function minVersion(
   for (var i = 0; i < range.set.length; ++i) {
     var comparators = range.set[i];
 
-    comparators.forEach(comparator => {
+    comparators.forEach((comparator) => {
       // Clone to avoid manipulating the comparator's semver object.
       var compver = new SemVer(comparator.semver.version);
       switch (comparator.operator) {
@@ -1724,7 +1713,7 @@ export function outside(
     let high: Comparator | null = null;
     let low: Comparator | null = null;
 
-    comparators.forEach(comparator => {
+    comparators.forEach((comparator) => {
       if (comparator.semver === ANY) {
         comparator = new Comparator(">=0.0.0");
       }

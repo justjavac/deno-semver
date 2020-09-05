@@ -2,7 +2,10 @@
 
 **A fork of [node-semver](https://github.com/npm/node-semver) using TypeScript**
 
-[![Build Status](https://travis-ci.com/justjavac/deno-semver.svg?branch=master)](https://travis-ci.com/justjavac/deno-semver)
+[![tag](https://img.shields.io/github/release/justjavac/deno-semver)](https://github.com/justjavac/deno-semver/releases)
+[![Build Status](https://github.com/justjavac/deno-semver/workflows/ci/badge.svg?branch=master)](https://github.com/justjavac/deno-semver/actions)
+[![license](https://img.shields.io/github/license/justjavac/deno-semver)](https://github.com/justjavac/deno-semver/blob/master/LICENSE)
+[![](https://img.shields.io/badge/deno-v1.3-green.svg)](https://github.com/denoland/deno)
 
 ## Usage
 
