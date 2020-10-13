@@ -25,6 +25,18 @@ semver.valid(semver.coerce("v2")); // "2.0.0"
 semver.valid(semver.coerce("42.6.7.9.3-alpha")); // "42.6.7"
 ```
 
+This module can also be used in the cli like this:
+
+```bash
+deno run https://deno.land/x/semver/cli.ts valid 1.2.3 // "1.2.3"
+deno run https://deno.land/x/semver/cli.ts valid a.b.c // null
+deno run https://deno.land/x/semver/cli.ts clean "  =v1.2.3   " // "1.2.3"
+deno run https://deno.land/x/semver/cli.ts satisfies "1.2.3" "1.x || >=2.5.0 || 5.0.0 - 7.2.3" // true
+deno run https://deno.land/x/semver/cli.ts gt "1.2.3" "9.8.7" // false
+deno run https://deno.land/x/semver/cli.ts lt "1.2.3" "9.8.7" // true
+deno run https://deno.land/x/semver/cli.ts minVersion ">=1.0.0" // "1.0.0"
+```
+
 ## Versions
 
 A "version" is described by the `v2.0.0` specification found at
