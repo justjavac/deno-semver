@@ -24,7 +24,7 @@ jobs:
       #   run: deno lint --unstable
 
       - name: Tests
-        run: deno test --unstable
+        run: deno test --unstable --allow-run
 
       - name: Release
         uses: softprops/action-gh-release@v1
