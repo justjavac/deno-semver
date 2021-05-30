@@ -9,7 +9,7 @@
 
 ## Usage
 
-As a node module:
+As a deno module:
 
 ```ts
 import * as semver from "https://deno.land/x/semver/mod.ts";
