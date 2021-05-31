@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.0 - [2021-05-31]
+
+- Fix type error for latest deno canary (#12)
+- fix typo (#13)
+
 ## 1.2.0 - [2021-01-12]
 
 - add cli
