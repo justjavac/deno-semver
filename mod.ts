@@ -1713,7 +1713,7 @@ export function outside(
     let high: Comparator | null = null;
     let low: Comparator | null = null;
 
-    comparators.forEach((comparator) => {
+    for (let comparator of comparators) {
       if (comparator.semver === ANY) {
         comparator = new Comparator(">=0.0.0");
       }
@@ -1724,7 +1724,7 @@ export function outside(
       } else if (ltfn(comparator.semver, low.semver, optionsOrLoose)) {
         low = comparator;
       }
-    });
+    }
 
     if (high === null || low === null) return true;
 
