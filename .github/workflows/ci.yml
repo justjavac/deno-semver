@@ -13,18 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup Deno
-        uses: denolib/setup-deno@master
-        with:
-          deno-version: 1.3
+        uses: denoland/setup-deno@v1
 
       - name: Format
         run: deno fmt --check
 
       # - name: Lint
-      #   run: deno lint --unstable
+      #   run: deno lint
 
       - name: Tests
-        run: deno test --unstable --allow-run
+        run: deno test --allow-run
 
       - name: Release
         uses: softprops/action-gh-release@v1

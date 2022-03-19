@@ -590,6 +590,7 @@ export class SemVer {
           let i: number = this.prerelease.length;
           while (--i >= 0) {
             if (typeof this.prerelease[i] === "number") {
+              // deno-fmt-ignore
               (this.prerelease[i] as number)++;
               i = -2;
             }
